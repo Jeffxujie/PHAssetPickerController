@@ -10,6 +10,13 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+@interface CompressedVideo ()
+
+@property (nonatomic,strong) dispatch_queue_t queue;
+
+
+@end
+
 @implementation CompressedVideo
 
 //进行视屏压缩 返回存在本地的视屏 resultPath最后一段的
@@ -18,41 +25,44 @@
      __block NSString * url=nil;
     if(inputURL)
     {
-        NSString * filePath = [resultPath.stringByDeletingPathExtension stringByAppendingFormat:@".mp4"];
-        
-        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:inputURL options:nil];
-        AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
-        session.outputURL = [NSURL fileURLWithPath:filePath];
-
-        session.outputFileType = AVFileTypeMPEG4;
-        session.shouldOptimizeForNetworkUse = YES;
-        
-        [session exportAsynchronouslyWithCompletionHandler:^{
-            switch (session.status) {
-                case AVAssetExportSessionStatusUnknown:
-                    [self getResultWithIndex:NO AndWithUrl:filePath];
-                    break;
-                case AVAssetExportSessionStatusWaiting:
-                    [self getResultWithIndex:NO AndWithUrl:filePath];
-                    break;
-                case AVAssetExportSessionStatusExporting:
-                    [self getResultWithIndex:NO AndWithUrl:filePath];
-                    break;
-                case AVAssetExportSessionStatusCompleted:
-                {
-                    url = filePath;
-                    [self getResultWithIndex:YES AndWithUrl:filePath];
-                    break;
+        dispatch_async(self.queue, ^{
+            
+            NSString * filePath = [resultPath.stringByDeletingPathExtension stringByAppendingFormat:@".mp4"];
+            
+            AVURLAsset *asset = [AVURLAsset URLAssetWithURL:inputURL options:nil];
+            AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
+            session.outputURL = [NSURL fileURLWithPath:filePath];
+            
+            session.outputFileType = AVFileTypeMPEG4;
+            session.shouldOptimizeForNetworkUse = YES;
+            
+            [session exportAsynchronouslyWithCompletionHandler:^{
+                switch (session.status) {
+                    case AVAssetExportSessionStatusUnknown:
+                        [self getResultWithIndex:NO AndWithUrl:filePath];
+                        break;
+                    case AVAssetExportSessionStatusWaiting:
+                        [self getResultWithIndex:NO AndWithUrl:filePath];
+                        break;
+                    case AVAssetExportSessionStatusExporting:
+                        [self getResultWithIndex:NO AndWithUrl:filePath];
+                        break;
+                    case AVAssetExportSessionStatusCompleted:
+                    {
+                        url = filePath;
+                        [self getResultWithIndex:YES AndWithUrl:filePath];
+                        break;
+                    }
+                        break;
+                    case AVAssetExportSessionStatusFailed:
+                        [self getResultWithIndex:NO AndWithUrl:filePath];
+                        break;
+                    case AVAssetExportSessionStatusCancelled:
+                        [self getResultWithIndex:NO AndWithUrl:filePath];
+                        break;
                 }
-                    break;
-                case AVAssetExportSessionStatusFailed:
-                    [self getResultWithIndex:NO AndWithUrl:filePath];
-                    break;
-                case AVAssetExportSessionStatusCancelled:
-                    [self getResultWithIndex:NO AndWithUrl:filePath];
-                    break;
-            }
-        }];
+            }];
+        });
     }
 }
 
@@ -77,32 +87,35 @@
 {
     if(path&&imageData)
     {
-        BOOL isOK=NO;
-        
-        NSString * savePATH =[[self getNewHomePath] stringByAppendingPathComponent:path.lastPathComponent];
-        
-        if([imageData writeToFile:[[self getNewHomePath] stringByAppendingPathComponent:path.lastPathComponent] atomically:YES])
-        {
-            isOK=YES;
-        }
-        else
-        {
-            isOK=NO;
-        }
-        
-        __weak typeof(self) weakSelf = self;
-        __strong typeof(weakSelf) strongSelf=weakSelf;
-        if(strongSelf)
-        {
-            if(self.phasset)
+        dispatch_async(self.queue, ^{
+       
+            BOOL isOK=NO;
+            
+            NSString * savePATH =[[self getNewHomePath] stringByAppendingPathComponent:path.lastPathComponent];
+            
+            if([imageData writeToFile:[[self getNewHomePath] stringByAppendingPathComponent:path.lastPathComponent] atomically:YES])
             {
-                strongSelf.IsComplatePressBlockPh(savePATH,isOK,nil);
+                isOK=YES;
             }
             else
             {
-                strongSelf.IsComplatePressBlock(savePATH,isOK,nil);
+                isOK=NO;
             }
-        }
+            
+            __weak typeof(self) weakSelf = self;
+            __strong typeof(weakSelf) strongSelf=weakSelf;
+            if(strongSelf)
+            {
+                if(self.phasset)
+                {
+                    strongSelf.IsComplatePressBlockPh(savePATH,isOK,nil);
+                }
+                else
+                {
+                    strongSelf.IsComplatePressBlock(savePATH,isOK,nil);
+                }
+            }
+        });
     }
 }
 
@@ -128,5 +141,15 @@
     }
     return fileDirectory;
 }
+
+-(dispatch_queue_t)queue
+{
+    if(!_queue)
+    {
+        _queue=dispatch_queue_create("com.transform.you", DISPATCH_QUEUE_CONCURRENT);;
+    }
+    return _queue;
+}
+
 
 @end
