@@ -172,6 +172,7 @@
                 
                 PHImageModel * model = [[PHImageModel alloc] init];
 
+                model.isImage = self.type==5? YES:NO;
                 ALAssetRepresentation* representation = [asset defaultRepresentation];
 //                NSString *uti = [representation UTI];
 //                NSURL *videoURL = [[asset valueForProperty:ALAssetPropertyURLs] valueForKey:uti];

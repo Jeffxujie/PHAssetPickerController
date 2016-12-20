@@ -12,6 +12,10 @@
 
 #import "WBImagePickerController.h"
 
+#import "CompressedVideo.h"
+
+#import "CompressedVideo.h"
+
 @interface ViewController ()
 
 @end
@@ -33,13 +37,49 @@
 -(void)blicked
 {
     NSInteger sys = [[UIDevice currentDevice].systemVersion integerValue];
+    
+    NSInteger type=5;
+    
     //使用最新版本的phasset
     if(sys>=8)
     {
         PHImageCollectionController * phCL =[[PHImageCollectionController alloc] init];
-        [phCL getResultWithType:5 andWithSuccess:^(NSArray *result) {
-            
-            NSLog(@"%ld",result.count);
+        [phCL getResultWithType:type andWithSuccess:^(NSArray *result) {
+            //这里只获取到第一个选项
+            if(result.hash)
+            {
+                NSLog(@"%ld",result.count);
+                
+                PHImageModel * model =result[0];
+                
+                CompressedVideo * compre =[[CompressedVideo alloc] init];
+                compre.phasset=model.phasset;
+                compre.IsComplatePressBlockPh=^(NSString * url,BOOL isComplate,PHAsset * asset)
+                {
+                    //转换成功 可以直接上传
+                    if(isComplate)
+                    {
+                        NSLog(@"%@",url);
+                    }
+                    //失败的原因一般都是本地已经存在了转换完成的文件
+                    else
+                    {
+                        NSLog(@"%@",url);
+                    }
+                };
+                if(model.isImage)
+                {
+                    //这里就可以直接获取到照片的data（由于我们需要断点续传，所以我才需要将文件存到本地,才上传文件）
+                    [[PHImageManager defaultManager] requestImageDataForAsset:model.phasset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                        
+                        [compre lowQuailtyWithInputData:imageData andfilepath:model.imageName];
+                    }];
+                }
+                else
+                {
+                    [compre lowQuailtyWithInputURL:model.url resultPath:model.imageName];
+                }
+            }
             
         }];
         
@@ -49,10 +89,42 @@
     //这里就可以调用alasset
     else
     {
-        [self presentViewController:[[WBImagePickerController alloc]initWithMaxCount:20 AndWithSelectType:5 completedBlock:^(NSArray *images) {
+        [self presentViewController:[[WBImagePickerController alloc]initWithMaxCount:20 AndWithSelectType:type completedBlock:^(NSArray *images) {
             
-            NSLog(@"%ld",images.count);
-            
+            if(images.hash)
+            {
+                NSLog(@"%ld",images.count);
+                
+                PHImageModel * model =images[0];
+                
+                CompressedVideo * compre =[[CompressedVideo alloc] init];
+                compre.phasset=model.phasset;
+                compre.IsComplatePressBlock=^(NSString * url,BOOL isComplate,ALAsset * asset)
+                {
+                    //转换成功 可以直接上传
+                    if(isComplate)
+                    {
+                        NSLog(@"%@",url);
+                    }
+                    //失败的原因一般都是本地已经存在了转换完成的文件
+                    else
+                    {
+                        NSLog(@"%@",url);
+                    }
+                };
+                if(model.isImage)
+                {
+                    //这里就可以直接获取到照片的data（由于我们需要断点续传，所以我才需要将文件存到本地,才上传文件）
+                    [[PHImageManager defaultManager] requestImageDataForAsset:model.phasset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                        
+                        [compre lowQuailtyWithInputData:imageData andfilepath:model.imageName];
+                    }];
+                }
+                else
+                {
+                    [compre lowQuailtyWithInputURL:model.url resultPath:model.imageName];
+                }
+            }
         }] animated:YES completion:nil];
     }
 }

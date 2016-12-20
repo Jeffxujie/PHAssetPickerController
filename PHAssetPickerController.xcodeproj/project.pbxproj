@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		CE0AE0561E079DD500397279 /* WBImageCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0AE04F1E079DD500397279 /* WBImageCollectionController.m */; };
 		CE0AE0581E079DD500397279 /* WBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0AE0521E079DD500397279 /* WBImagePickerController.m */; };
+		CE0AE0A51E07E79F00397279 /* CompressedVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0AE0A41E07E79F00397279 /* CompressedVideo.m */; };
+		CE0AE0A81E07E7CD00397279 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0AE0A71E07E7CD00397279 /* Photos.framework */; };
+		CE0AE0AA1E07E81900397279 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0AE0A91E07E81900397279 /* AVFoundation.framework */; };
+		CE0AE0AC1E07E85C00397279 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0AE0AB1E07E85C00397279 /* AssetsLibrary.framework */; };
 		CE3B0BF61E076E1C004AD6BF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3B0BF51E076E1C004AD6BF /* main.m */; };
 		CE3B0BF91E076E1C004AD6BF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3B0BF81E076E1C004AD6BF /* AppDelegate.m */; };
 		CE3B0BFC1E076E1C004AD6BF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3B0BFB1E076E1C004AD6BF /* ViewController.m */; };
@@ -39,6 +43,11 @@
 		CE0AE04F1E079DD500397279 /* WBImageCollectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImageCollectionController.m; sourceTree = "<group>"; };
 		CE0AE0511E079DD500397279 /* WBImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBImagePickerController.h; sourceTree = "<group>"; };
 		CE0AE0521E079DD500397279 /* WBImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBImagePickerController.m; sourceTree = "<group>"; };
+		CE0AE0A31E07E79F00397279 /* CompressedVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressedVideo.h; sourceTree = "<group>"; };
+		CE0AE0A41E07E79F00397279 /* CompressedVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompressedVideo.m; sourceTree = "<group>"; };
+		CE0AE0A71E07E7CD00397279 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		CE0AE0A91E07E81900397279 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		CE0AE0AB1E07E85C00397279 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		CE3B0BF11E076E1C004AD6BF /* PHAssetPickerController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PHAssetPickerController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE3B0BF51E076E1C004AD6BF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CE3B0BF71E076E1C004AD6BF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -69,6 +78,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0AE0AC1E07E85C00397279 /* AssetsLibrary.framework in Frameworks */,
+				CE0AE0AA1E07E81900397279 /* AVFoundation.framework in Frameworks */,
+				CE0AE0A81E07E7CD00397279 /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,12 +105,32 @@
 			path = WBAssetPickerController;
 			sourceTree = "<group>";
 		};
+		CE0AE0A21E07E79F00397279 /* Compressedvideo */ = {
+			isa = PBXGroup;
+			children = (
+				CE0AE0A31E07E79F00397279 /* CompressedVideo.h */,
+				CE0AE0A41E07E79F00397279 /* CompressedVideo.m */,
+			);
+			path = Compressedvideo;
+			sourceTree = "<group>";
+		};
+		CE0AE0A61E07E7CD00397279 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE0AE0AB1E07E85C00397279 /* AssetsLibrary.framework */,
+				CE0AE0A91E07E81900397279 /* AVFoundation.framework */,
+				CE0AE0A71E07E7CD00397279 /* Photos.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CE3B0BE81E076E1C004AD6BF = {
 			isa = PBXGroup;
 			children = (
 				CE3B0BF31E076E1C004AD6BF /* PHAssetPickerController */,
 				CE3B0C0D1E076E1D004AD6BF /* PHAssetPickerControllerTests */,
 				CE3B0BF21E076E1C004AD6BF /* Products */,
+				CE0AE0A61E07E7CD00397279 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -114,6 +146,7 @@
 		CE3B0BF31E076E1C004AD6BF /* PHAssetPickerController */ = {
 			isa = PBXGroup;
 			children = (
+				CE0AE0A21E07E79F00397279 /* Compressedvideo */,
 				CE0AE0481E079DD500397279 /* WBAssetPickerController */,
 				CE3B0C191E076ED8004AD6BF /* PHAssetPickerController */,
 				CE3B0BF71E076E1C004AD6BF /* AppDelegate.h */,
@@ -277,6 +310,7 @@
 				CE0AE0581E079DD500397279 /* WBImagePickerController.m in Sources */,
 				CE3B0BF61E076E1C004AD6BF /* main.m in Sources */,
 				CE3B0C231E076ED8004AD6BF /* PHImageModel.m in Sources */,
+				CE0AE0A51E07E79F00397279 /* CompressedVideo.m in Sources */,
 				CE3B0C281E076F11004AD6BF /* WBImageCollectionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

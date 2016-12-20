@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "PHImageModel.h"
 @interface ViewController : UIViewController
 
 

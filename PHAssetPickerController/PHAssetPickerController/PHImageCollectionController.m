@@ -161,6 +161,7 @@
 //                    model.URLInPotoes=[NSURL URLWithString:url];
                     model.phasset=item;
                     model.URLInPotoes=url;
+                    model.isImage=YES;
                     [photos addObject:model];
                     
                     if(photos.count==selectAssets.count)
@@ -189,7 +190,7 @@
                     NSURL* videoURL = [NSURL URLWithString:url];
                     model.url=videoURL;
 //                    NSLog(@"%@",[model.URLInPotoes absoluteString]);
-                    
+                    model.isImage=NO;
                     model.phasset=item;
                     [photos addObject:model];
                     if(photos.count==selectAssets.count)
